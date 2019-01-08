@@ -26,6 +26,15 @@ export function embedUrlConvert(url) {
         return `//player.bilibili.com/player.html?aid=${id}&page=1`
     }
 
+    if (url.match(/facebook/)) {
+        const id = getFacebookId(url);
+        if (!id) {
+            return null;
+        }
+
+        return `//www.facebook.com/video/embed?video_id=${id}`
+    }
+
     return null
 }
 
@@ -53,6 +62,17 @@ function getYouKuId(url) {
 
 function getBiliBiliId(url) {
     let regExp = /^.*(\/av)([a-zA-Z0-9=]*)/;
+    let match = url.match(regExp);
+
+    if (match && match[2].length > 5) {
+        return match[2];
+    } else {
+        return null;
+    }
+}
+
+function getFacebookId(url) {
+    let regExp = /^.*(\/videos\/)([a-zA-Z0-9=]*)/;
     let match = url.match(regExp);
 
     if (match && match[2].length > 5) {
